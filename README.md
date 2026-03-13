@@ -26,9 +26,11 @@ The app uses **local storage** and **local notifications**, so everything runs e
 You can capture screenshots from your device/emulator and drop them into a `screenshots/` folder, then link them here:
 
 ```md
-![Home screen](screenshots/home.png)
-![Add task](screenshots/add-task.png)
-![Edit task](screenshots/edit-task.png)
+![Home screen Before completing task](src/Screenshot/home1.jpeg)
+![Home screen After completing task](src/Screenshot/home2.jpeg)
+![Add task](src/Screenshots/addTask.jpeg)
+![Edit task](src/Screenshots/editTask.jpeg)
+![Delete task](src/Screenshots/deleteTask.jpeg)
 ```
 
 ---
@@ -100,7 +102,7 @@ src/
     ReminderCard.js           // Card displaying task info + actions
     ConfirmDeleteModal.js     // "Are you sure?" delete confirmation
     LatestReminderModal.js    // Shows latest reminder details
-    NextEkadashiModal.js      // Ekadashi-specific info modal
+  
 
   screens/
     HomeScreen.js             // Main list of tasks/reminders
