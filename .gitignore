@@ -1,6 +1,28 @@
-# OSX
-#
+# Node
+node_modules/
+
+# Android
+android/.gradle
+android/app/build
+android/build
+
+# iOS
+ios/build
+ios/Pods
+
+# React Native
+.expo
+.env
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Mac
 .DS_Store
+
+
+# OSX
 
 # Xcode
 #
