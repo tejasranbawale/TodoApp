@@ -178,9 +178,9 @@ The app should start on your connected device or emulator.
 
 ## 7️⃣ Author information
 
-- **Author**: _Tejas SHivaji Ranbawale_
-- **Role**: _React Native developer_  
-- **Contact**: _7875325924_
+- **Author**: Tejas Shivaji Ranbawale
+- **Role**: React Native developer
+- **Contact**: 7875325924
 - **Email**: _tejasranbawale@gmail.com_
 - **GitHub**: _https://github.com/tejasranbawale_  
 
