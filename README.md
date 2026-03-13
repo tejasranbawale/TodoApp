@@ -1,97 +1,184 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## 1️⃣ Project overview
 
-# Getting Started
+AlarmTodoApp is a **React Native task & reminder app**
+It lets you create tasks with a due date and time, configure when you want to be reminded (alarm offset), and mark them as completed once done.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Each task/reminder currently supports:
+- **Title** (required)
+- **Description / note** (optional)
+- **Due date**
+- **Task time**
+- **Alarm time offset** (e.g. 10 minutes before)
+- **Completion status** with a visual tick in the list
 
-## Step 1: Start Metro
+The app uses **local storage** and **local notifications**, so everything runs entirely on-device.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## 2️⃣ Screenshots / demo
+
+> Replace these placeholders with real screenshots from your device / emulator.
+
+- **Home screen (Tasks list)** – shows upcoming tasks with date, time, alarm info, and completion tick.
+- **Add Task / Reminder modal** – modal form for creating a task with date, time, alarm offset and note.
+- **Edit Task modal** – update task fields and mark as completed.
+
+You can capture screenshots from your device/emulator and drop them into a `screenshots/` folder, then link them here:
+
+```md
+![Home screen](screenshots/home.png)
+![Add task](screenshots/add-task.png)
+![Edit task](screenshots/edit-task.png)
+```
+
+---
+
+## 3️⃣ Features
+
+- **Task / reminder management**
+  - Add tasks with title, description, date and time.
+  - Edit existing tasks in a dedicated modal.
+  - Delete tasks with a confirmation flow.
+
+- **Completion tracking**
+  - Mark tasks as **completed** from the edit modal.
+  - Completed tasks show a **green tick** next to the title in the list.
+
+- **Alarm & notifications**
+  - Configurable **alarm time offsets** when creating or editing:
+    - At time of task
+    - 10 minutes before
+    - 20 minutes before
+    - 1 day before
+  - Uses `@notifee/react-native` to schedule local notifications on Android.
+  - Notification channel is configured with **sound, vibration and screen wake**.
+
+- **UI / UX**
+  - Floating **Add Task** button.
+  - Reusable modals for add/edit.
+  - Uses **Material Icons** (via `react-native-vector-icons`) for edit and delete actions in the task card.
+
+---
+
+## 4️⃣ Tech stack
+
+- **Core**
+  - `react` `19.2.0`
+  - `react-native` `0.83.1`
+
+- **Navigation**
+  - `@react-navigation/native`
+  - `@react-navigation/native-stack`
+  - `@react-navigation/bottom-tabs`
+
+- **Storage & utilities**
+  - `@react-native-async-storage/async-storage` – persistent local storage for tasks/reminders.
+
+- **Notifications / alarm**
+  - `@notifee/react-native` – local notifications with channels, sound, vibration.
+
+- **UI helpers**
+  - `@react-native-community/datetimepicker` – date & time pickers.
+  - `react-native-vector-icons` – edit/delete icons in the task card.  
+    (Make sure this dependency is installed in your local environment.)
+
+---
+
+## 5️⃣ Project structure
+
+High‑level `src/` layout (only key files shown):
+
+```text
+src/
+  components/
+    AddReminderButton.js      // Floating button to open Add modal
+    AddReminderModal.js       // Modal to create a new task/reminder
+    EditReminderModal.js      // Modal to edit an existing reminder
+    AddTaskButton.js          // Floating button variant for tasks
+    AddTaskModal.js           // Modal to create a new task (TaskStorage-based)
+    EditTaskModal.js          // Modal to edit an existing task
+    ReminderCard.js           // Card displaying task info + actions
+    ConfirmDeleteModal.js     // "Are you sure?" delete confirmation
+    LatestReminderModal.js    // Shows latest reminder details
+    NextEkadashiModal.js      // Ekadashi-specific info modal
+
+  screens/
+    HomeScreen.js             // Main list of tasks/reminders
+
+  storage/
+    reminderStorage.js        // AsyncStorage helpers for reminders
+    TaskStorage.js            // AsyncStorage helpers for tasks
+
+  utils/
+    notificationService.js    // Notifee-based scheduling for alarms
+    notifications.js          // Legacy push notification utilities
+    dateUtils.js              // Small date helpers
+
+  navigation/
+    AppNavigator.js           // Navigation container & stacks
+```
+
+> Note: Some parts still use "Reminder" naming for backward compatibility while newer parts use "Task" – both share the same basic shape (title, note, date, time, completed, alarmTime).
+
+---
+
+## 6️⃣ Setup instructions
+
+### Prerequisites
+
+- Node.js **>= 20** (as defined in `package.json`).
+- React Native development environment set up for Android (and optionally iOS):  
+  see the official guide: [`Set Up Your Environment`](https://reactnative.dev/docs/set-up-your-environment).
+
+### Install dependencies
+
+From the project root:
 
 ```sh
 # Using npm
-npm start
+npm install
 
-# OR using Yarn
-yarn start
+# If you want vector icons (recommended)
+npm install react-native-vector-icons
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+On iOS (if you add an iOS target later), you will also need to install CocoaPods in the `ios/` folder:
 
 ```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+cd ios
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
+cd ..
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### Run Metro
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm start
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Run on Android
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+With Metro running in another terminal:
 
-## Step 3: Modify your app
+```sh
+npm run android
+```
 
-Now that you have successfully run the app, let's make changes!
+The app should start on your connected device or emulator.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Notifications / alarm notes
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+- On **Android 13+**, make sure to **grant notification permissions** when prompted, or manually from system settings.
+- If you change notification-related code (like channels), uninstall and reinstall the app to ensure channels are recreated.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
+## 7️⃣ Author information
 
-You've successfully run and modified your React Native App. :partying_face:
+- **Author**: _Tejas SHivaji Ranbawale_
+- **Role**: _React Native developer_  
+- **Contact**: _7875325924_
+- **Email**: _tejasranbawale@gmail.com_
+- **GitHub**: _https://github.com/tejasranbawale_  
 
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
