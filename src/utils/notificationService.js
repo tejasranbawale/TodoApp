@@ -11,8 +11,8 @@ const ALARM_OFFSETS_MINUTES = {
 
 export async function scheduleNotification(task) {
   const channelId = await notifee.createChannel({
-    id: 'TaskReminder',
-    name: 'Task Reminders',
+    id: 'AlarmTodoApp',
+    name: 'AlarmTodoApp',
     importance: AndroidImportance.HIGH,
     sound: 'default', // ensure sound is enabled for this channel
   });

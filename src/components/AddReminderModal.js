@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { saveReminder } from '../storage/reminderStorage';
@@ -54,108 +56,120 @@ export default function AddReminderModal({ visible, onClose, onSave }) {
     scheduleNotification(reminder);
     onSave();
     onClose();
+    setTitle('');
+    setNote('');
+    setDate(new Date());
+    setTime(new Date());
+    setStatus();
+    setCompleted(false);
+    setAlarmTime('10_MIN_BEFORE');
   }
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.overlay}>
+      <KeyboardAvoidingView
+        style={styles.overlay}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <View style={styles.modal}>
-          <Text style={styles.header}>Add Task</Text>
+          <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+            <Text style={styles.header}>Add Task</Text>
 
-          <TextInput
-            placeholder="Give Task Title"
-            value={title}
-            onChangeText={setTitle}
-            style={styles.input}
-          />
+            <TextInput
+              placeholder="Give Task Title"
+              value={title}
+              onChangeText={setTitle}
+              style={styles.input}
+            />
 
-          <TouchableOpacity
-            onPress={() => setShowDate(true)}
-            style={styles.picker}
-          >
-            <Text>Select Date: {date.toDateString()}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowDate(true)}
+              style={styles.picker}
+            >
+              <Text>Select Date: {date.toDateString()}</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => setShowTime(true)}
-            style={styles.picker}
-          >
-            <Text>Select Time: {time.toTimeString().slice(0, 5)}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowTime(true)}
+              style={styles.picker}
+            >
+              <Text>Select Time: {time.toTimeString().slice(0, 5)}</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => setShowAlarmDropdown(prev => !prev)}
-            style={styles.picker}
-          >
-            <Text>
-              Alarm time:{' '}
-              {
-                (ALARM_OPTIONS.find(o => o.value === alarmTime) ||
-                  ALARM_OPTIONS[1]).label
-              }
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setShowAlarmDropdown(prev => !prev)}
+              style={styles.picker}
+            >
+              <Text>
+                Alarm time:{' '}
+                {
+                  (ALARM_OPTIONS.find(o => o.value === alarmTime) ||
+                    ALARM_OPTIONS[1]).label
+                }
+              </Text>
+            </TouchableOpacity>
 
-          {showAlarmDropdown && (
-            <View style={styles.dropdown}>
-              {ALARM_OPTIONS.map(option => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={styles.dropdownItem}
-                  onPress={() => {
-                    setAlarmTime(option.value);
-                    setShowAlarmDropdown(false);
-                  }}
-                >
-                  <Text>{option.label}</Text>
-                </TouchableOpacity>
-              ))}
+            {showAlarmDropdown && (
+              <View style={styles.dropdown}>
+                {ALARM_OPTIONS.map(option => (
+                  <TouchableOpacity
+                    key={option.value}
+                    style={styles.dropdownItem}
+                    onPress={() => {
+                      setAlarmTime(option.value);
+                      setShowAlarmDropdown(false);
+                    }}
+                  >
+                    <Text>{option.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+
+            <TextInput
+              placeholder="Note (optional)"
+              value={note}
+              onChangeText={setNote}
+              style={[styles.input, { height: 60 }]}
+              multiline
+            />
+
+            <View style={styles.actions}>
+              <TouchableOpacity onPress={onClose}>
+                <Text>Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.save} onPress={handleSave}>
+                <Text style={{ color: '#fff' }}>Save</Text>
+              </TouchableOpacity>
             </View>
-          )}
 
-          <TextInput
-            placeholder="Note (optional)"
-            value={note}
-            onChangeText={setNote}
-            style={[styles.input, { height: 60 }]}
-            multiline
-          />
+            {showDate && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display="spinner"
+                onChange={(e, d) => {
+                  setShowDate(false);
+                  if (d) setDate(d);
+                }}
+              />
+            )}
 
-          <View style={styles.actions}>
-            <TouchableOpacity onPress={onClose}>
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.save} onPress={handleSave}>
-              <Text style={{ color: '#fff' }}>Save</Text>
-            </TouchableOpacity>
-          </View>
-
-          {showDate && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="spinner"
-              onChange={(e, d) => {
-                setShowDate(false);
-                if (d) setDate(d);
-              }}
-            />
-          )}
-
-          {showTime && (
-            <DateTimePicker
-              value={time}
-              mode="time"
-              display="spinner"
-              onChange={(e, t) => {
-                setShowTime(false);
-                if (t) setTime(t);
-              }}
-            />
-          )}
+            {showTime && (
+              <DateTimePicker
+                value={time}
+                mode="time"
+                display="spinner"
+                onChange={(e, t) => {
+                  setShowTime(false);
+                  if (t) setTime(t);
+                }}
+              />
+            )}
+          </ScrollView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
@@ -169,9 +183,13 @@ const styles = StyleSheet.create({
   },
   modal: {
     width: '90%',
+    maxHeight: '80%',
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   header: { fontSize: 18, fontWeight: '700', marginBottom: 12 },
   input: {

@@ -25,13 +25,9 @@ The app uses **local storage** and **local notifications**, so everything runs e
 
 You can capture screenshots from your device/emulator and drop them into a `screenshots/` folder, then link them here:
 
-```md
-![Home screen Before completing task](src/Screenshot/home1.jpeg)
-![Home screen After completing task](src/Screenshot/home2.jpeg)
-![Add task](src/Screenshots/addTask.jpeg)
-![Edit task](src/Screenshots/editTask.jpeg)
-![Delete task](src/Screenshots/deleteTask.jpeg)
-```
+| New blank task screen | Add new task | Tasks Added | Task Notification |
+|:---:|:---:|:---:|:---:|
+| <img src="./src/Screenshot/1.jpeg" width="200" alt="New blank task screen" /> | <img src="./src/Screenshot/2.jpeg" width="200" alt="Add new task" /> | <img src="./src/Screenshot/3.jpeg" width="200" alt="Tasks Added" /> | <img src="./src/Screenshot/4.jpeg" width="200" alt="Task Notification" /> |
 
 ---
 

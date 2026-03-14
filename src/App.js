@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomTabs from './navigation/BottomTabs.js';
 // import BottomTabs from './navigation/BottomTabs';
 // import PushNotification from 'react-native-push-notification';
@@ -24,10 +25,12 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <HomeScreen />
-      {/* <BottomTabs /> */}
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <HomeScreen />
+        {/* <BottomTabs /> */}
+      </NavigationContainer>
+    </SafeAreaProvider>
     // <AuthProvider>
     //   <NavigationContainer>
     //     <RootNavigator />

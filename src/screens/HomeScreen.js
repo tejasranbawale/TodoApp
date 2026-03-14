@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ReminderCard from '../components/ReminderCard';
 import EditReminderModal from '../components/EditReminderModal';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
@@ -42,21 +43,62 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
+      <View
         style={{
-          fontFamily: Fonts.bold,
-          fontSize: 28,
-          fontWeight: 'bold',
-          margin: 20,
-          color: '#333',
+          backgroundColor: '#6200EE', // Primary brand color / Nav bar color
+          paddingTop: 16,
+          paddingBottom: 20,
+          paddingHorizontal: 20,
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 4,
+          elevation: 5,
         }}
       >
-        Tasks
-      </Text>
+        <Text
+          style={{
+            fontFamily: Fonts.bold,
+            fontSize: 28,
+            fontWeight: 'bold',
+            color: '#ffffff',
+          }}
+        >
+          Tasks
+        </Text>
+      </View>
       <FlatList
         data={reminders}
         keyExtractor={item => item.id}
+        contentContainerStyle={reminders.length === 0 ? { flex: 1, justifyContent: 'center' } : { padding: 10, paddingBottom: 80 }}
+        ListEmptyComponent={
+          <View style={{ alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+            <Text style={{ fontSize: 18, color: '#666', marginBottom: 20, textAlign: 'center' }}>
+              No tasks for today!
+            </Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#6200EE',
+                paddingVertical: 12,
+                paddingHorizontal: 24,
+                borderRadius: 24,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 3,
+              }}
+              onPress={() => setShowReminderModal(true)}
+            >
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+                Add your first task
+              </Text>
+            </TouchableOpacity>
+          </View>
+        }
         renderItem={({ item }) => (
           <ReminderCard
             item={item}
@@ -86,6 +128,6 @@ export default function HomeScreen() {
         onCancel={() => setDeleting(null)}
         onConfirm={handleDelete}
       />
-    </View>
+    </SafeAreaView>
   );
 }
